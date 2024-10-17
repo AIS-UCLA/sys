@@ -1,4 +1,4 @@
-/* SUJAIL -- A script to allow unprivlegded users to jexec jails
+/* SUJAIL -- A script to allow unprivileged users to jexec jails
  *
  * Copyright (c) 2024 Christopher Milan <chrismilan@ucla.edu>
  *
