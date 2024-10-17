@@ -28,7 +28,6 @@ struct rule {
 };
 
 
-
 int parseuid(const char *s, uid_t *uid) {
   struct passwd *pw;
   const char *errstr;
@@ -38,7 +37,7 @@ int parseuid(const char *s, uid_t *uid) {
     if (*uid == UID_MAX) return -1;
     return 0;
   }
-  *uid = strtonum(s, 0, UID_MAX - 1, &errstr);
+  *uid = (uid_t)strtonum(s, 0, UID_MAX - 1, &errstr);
   if (errstr) return -1;
   return 0;
 }
@@ -52,7 +51,7 @@ int parsegid(const char *s, gid_t *gid) {
     if (*gid == GID_MAX) return -1;
     return 0;
   }
-  *gid = strtonum(s, 0, GID_MAX - 1, &errstr);
+  *gid = (uid_t)strtonum(s, 0, GID_MAX - 1, &errstr);
   if (errstr) return -1;
   return 0;
 }
@@ -98,8 +97,8 @@ int parseconfig(const char *filename, struct rule **rt) {
   FILE *fd;
   struct stat sb;
   char line[1024];
-  int r_idx = 0;
-  int rt_sz = INIT_RT_SZ;
+  size_t r_idx = 0;
+  size_t rt_sz = INIT_RT_SZ;
   int lineno;
 
   fd = fopen(filename, "r");
@@ -162,7 +161,7 @@ int parseconfig(const char *filename, struct rule **rt) {
 
   fclose(fd);
 
-  return r_idx;
+  return (int)r_idx;
 }
 
 void usage(void) {
@@ -200,7 +199,6 @@ int main(int argc, char **argv) {
     exit(1);
   }
   groups[ngroups++] = getgid();
-
 
   if (permit(uid, groups, ngroups, argv[1], rt, nrules)) {
     syslog(LOG_AUTHPRIV | LOG_NOTICE, "jail exec not permitted for %s: %s", pw->pw_name, argv[1]);

@@ -11,9 +11,11 @@ DESTDIR=/usr/local/
 BINDIR= sbin
 
 CFLAGS+= -W -Wextra -Wpedantic -Werror \
-         -Wcast-qual -Wformat=2 -Wformat-security -Wnull-dereference -Wstack-protector \
+         -Wcast-qual -Wconversion -Wformat=2 -Wformat-security -Wnull-dereference -Wstack-protector \
+         -Warray-bounds-pointer-arithmetic -Wconditional-uninitialized -Wcomma -Wpointer-arith -Widiomatic-parentheses \
+         -Wunreachable-code-aggressive \
          -std=c99 \
-         -fstack-protector-strong  -fPIE 
+         -fstack-protector-strong -fPIE
 LIBS= -lutil
 
 
