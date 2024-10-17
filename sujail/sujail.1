@@ -1,0 +1,51 @@
+.\"Copyright (c) 2024 Christopher Milan <chrismilan@ucla.edu>
+
+.TH SUJAIL 1 "16 Oct 2024" "1.0" "sujail man page"
+.SH NAME
+\fBsujail\fR \- login to jails as root
+.SH SYNOPSIS
+\fBsujail\fR <jail>
+.SH DESCRIPTION
+\fBsujail\fR allows a permitted user to launch a \fIjail\fR as the superuser.
+Jails will be launched using the \fBjexec\fR utility with a clean environment
+(ie. \fB jexec\fR -l), with entry command "login -f root".
+.P
+\fBsujail\fR checks the configuration file \fI/etc/sujail.conf\fR to determine
+user privileges. The rules have the following format:
+.IP
+.B permit
+|
+.B deny
+.I identity
+.I jail
+.P
+Rules consist of the following parts:
+.P
+.B permit
+|
+.B deny
+.IP
+The action to be taken if the rule matches.
+.P
+.I identity
+.IP
+The username to match. Groups may be specified by prepending a colon (':').
+Numeric IDs are also accepted.
+.P
+.I jail
+.IP
+The jail that the user is allowed or denied to run. '*' specifies all jails.
+.P
+Comments may be specified using a hash mark ('#') at the beginning of the line
+and extend to the end of the current line.
+.P
+The last matching rule determines the action taken. If no rules match, then
+.B sujail
+defaults to denial.
+.SH FILES
+.I /etc/sujail.conf
+.IP
+.B sujail
+configuration file.
+.SH AUTHORS
+Christopher Milan (chrismilan@ucla.edu)
