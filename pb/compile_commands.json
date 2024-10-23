@@ -1,0 +1,34 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-W",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-Wcast-qual",
+      "-Wconversion",
+      "-Wformat=2",
+      "-Wformat-security",
+      "-Wnull-dereference",
+      "-Wstack-protector",
+      "-Warray-bounds-pointer-arithmetic",
+      "-Wconditional-uninitialized",
+      "-Wcomma",
+      "-Wpointer-arith",
+      "-Widiomatic-parentheses",
+      "-Wunreachable-code-aggressive",
+      "-std=c99",
+      "-I/usr/local/include",
+      "-fstack-protector-strong",
+      "-fPIE",
+      "-o",
+      "pb.o",
+      "pb.c"
+    ],
+    "directory": "/home/chris/fun/sys/pb",
+    "file": "/home/chris/fun/sys/pb/pb.c",
+    "output": "/home/chris/fun/sys/pb/pb.o"
+  }
+]
