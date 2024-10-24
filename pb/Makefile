@@ -9,16 +9,22 @@ BINMODE=0555
 MANOWN= root
 MANMODE=0644
 
-DESTDIR=/usr/local/
-BINDIR= bin
-MANDIR= share/man/
+ifeq ($(shell uname -s),Linux)
+	DESTDIR=/usr/
+	BINDIR= local/bin
+	MANDIR= share/man/
+	else
+	DESTDIR=/usr/local/
+	BINDIR= bin
+	MANDIR:=share/man/
+endif
 
 CFLAGS+= -W -Wextra -Wpedantic -Werror \
          -Wcast-qual -Wconversion -Wformat=2 -Wformat-security -Wnull-dereference -Wstack-protector \
          -Warray-bounds-pointer-arithmetic -Wconditional-uninitialized -Wcomma -Wpointer-arith -Widiomatic-parentheses \
          -Wunreachable-code-aggressive \
          -std=c99 \
-         -I/usr/local/include \
+         -I/usr/local/include -I./hc \
          -fstack-protector-strong -fPIE
 LIBS=    -lldap -llber
 LDFLAGS+=-L/usr/local/lib

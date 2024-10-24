@@ -10,7 +10,9 @@
 #include <pwd.h>
 #include <ldap.h>
 
-#define ATTRS (char *[]){"cn", "mobile", NULL}
+#include "hc.h"
+
+#define ATTRS (char *[]){"description", "o", "uid", "cn", "mobile", NULL}
 
 __attribute__((noreturn))
 void usage(void) {
@@ -23,6 +25,12 @@ int main(int argc, char **argv) {
   LDAP *ld;
   LDAPMessage *res, *msg;
   int i, err;
+  struct hc_data f  = { .next = NULL };
+  struct hc_data e1 = { .next = &f };
+  struct hc_data m1 = { .next = &e1 };
+  struct hc_data m0 = { .next = &m1 };
+  struct hc_data e0 = { .next = &m0 };
+  struct hc_data h  = { .next = &e0 };
 
   if (argc == 1) {
     struct passwd *pw = getpwuid(getuid());
@@ -37,8 +45,6 @@ int main(int argc, char **argv) {
     fprintf(stderr, "username too long\n");
     exit(1);
   }
-
-  printf("querying %s\n", uname);
 
   if ((err = ldap_initialize(&ld, "ldap://ldap.ais-ucla.org"))) {
     fprintf(stderr, "could not initalize LDAP (code %d)", err);
@@ -67,14 +73,20 @@ int main(int argc, char **argv) {
     char *attr;
     BerVarray *vals;
     BerElement *ber;
-    if (ldap_msgtype(msg) != LDAP_RES_SEARCH_ENTRY) { exit(1); }
+    if (ldap_msgtype(msg) != LDAP_RES_SEARCH_ENTRY) continue;
     for (attr = ldap_first_attribute(ld, msg, &ber); attr != NULL; attr = ldap_next_attribute(ld, msg, ber)) {
-      printf("%s: ", attr);
-      if ((vals = ldap_get_values_len(ld, msg, attr)))
-        for (i = 0; vals[i] != NULL; i++) printf("%s ", vals[i]->bv_val);
-      printf("\n");
-      ber_bvecfree(vals);
+      if ((vals = ldap_get_values_len(ld, msg, attr))) {
+        if (strcmp(attr, "description") == 0) m1.center = vals[0]->bv_val;
+        else if (strcmp(attr, "o") == 0) h.right = vals[0]->bv_val;
+        else if (strcmp(attr, "uid") == 0) f.left = vals[0]->bv_val;
+        else if (strcmp(attr, "cn") == 0) m0.center = vals[0]->bv_val;
+        else if (strcmp(attr, "mobile") == 0) h.left = vals[0]->bv_val;
+      }
     }
   }
+
+  printf("\n");
+  render(&h, 0);
+  printf("\n");
 }
 
