@@ -1,0 +1,10 @@
+[Unit]
+Description=Allow users to publish to ais-ucla.org
+After=multi-user.target
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/publish-daemon
+
+[Install]
+WantedBy=multi-user.target
