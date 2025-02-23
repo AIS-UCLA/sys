@@ -1,0 +1,9 @@
+publish script
+
+requirements: libssh2, lib9, libbsd
+
+build: make daemon
+install: sudo make install
+
+systemctl enable publish
+systemctl start publish
