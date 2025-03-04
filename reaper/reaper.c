@@ -141,8 +141,8 @@ int update_and_kill(struct pid_da *pids) {
 
   for (leveldb_iter_seek_to_first(iter); leveldb_iter_valid(iter); leveldb_iter_next(iter)) {
     size_t keylen, vallen;
-    const char *key = to_cstr(leveldb_iter_key(iter, &keylen), keylen);
-    const char *val = to_cstr(leveldb_iter_value(iter, &vallen), keylen);
+    char *key = to_cstr(leveldb_iter_key(iter, &keylen), keylen);
+    char *val = to_cstr(leveldb_iter_value(iter, &vallen), keylen);
     pid_t pid = (pid_t)atoi(key);
 
     if (bsearch(&pid, pids->items, pids->count, sizeof(pid_t), compare_pids) != NULL) {

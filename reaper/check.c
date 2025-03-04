@@ -24,8 +24,8 @@ int main(void) {
   if (leveldb_iter_valid(iter)) printf("%7s %3s\n", "PID", "CNT");
   for (; leveldb_iter_valid(iter); leveldb_iter_next(iter)) {
     size_t klen, vlen;
-    const char *key = to_cstr(leveldb_iter_key(iter, &klen), klen);
-    const char *val = to_cstr(leveldb_iter_value(iter, &vlen), vlen);
+    char *key = to_cstr(leveldb_iter_key(iter, &klen), klen);
+    char *val = to_cstr(leveldb_iter_value(iter, &vlen), vlen);
     printf("%7s %3s\n", key, val);
     free(key);
     free(val);
