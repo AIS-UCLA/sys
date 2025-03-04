@@ -27,6 +27,8 @@ int main(void) {
     const char *key = to_cstr(leveldb_iter_key(iter, &klen), klen);
     const char *val = to_cstr(leveldb_iter_value(iter, &vlen), vlen);
     printf("%7s %3s\n", key, val);
+    free(key);
+    free(val);
   }
 
   return 0;

@@ -163,6 +163,9 @@ int update_and_kill(struct pid_da *pids) {
       leveldb_delete(db, w_opts, key, keylen, &errstr);
       if (errstr != NULL) goto leveldb_err;
     }
+
+    free(key);
+    free(val);
   }
 
   leveldb_iter_destroy(iter);
