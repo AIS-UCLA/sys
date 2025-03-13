@@ -1,6 +1,6 @@
 publish script
 
-requirements: libssh2, lib9, libbsd
+requirements: libssh2, lib9, libbsd, libarchive
 
 build: make daemon
 install: sudo make install
