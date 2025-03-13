@@ -1,4 +1,4 @@
 #!/bin/sh
 
-nc -U /var/run/publish.sock
+tar cf - -C ~/public_html . | nc -U /run/publish/daemon.sock
 

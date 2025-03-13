@@ -1,1 +1,1 @@
-#define DAEMON_SOCK "/var/run/publish.sock"
+#define DAEMON_SOCK "/run/publish/daemon.sock"

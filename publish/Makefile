@@ -1,4 +1,4 @@
-BINOWN= root
+BINOWN= publish
 
 ifeq ($(shell uname -s),Linux)
 	DESTDIR=/usr/
@@ -22,15 +22,16 @@ daemon.o: daemon.c config.h
 	$(CC) -c -o $@ daemon.c $(CFLAGS)
 
 daemon: daemon.o
-	$(CC) -o $@ $^ $(LDFLAGS) -lssh2 -l9 -lbsd
+	$(CC) -o $@ $^ $(LDFLAGS) -lssh2 -l9 -lbsd -larchive
 
 install: daemon publish.sh
-	install -o $(BINOWN) -m 755 publish.sh $(DESTDIR)$(BINDIR)/publish
+	id -u $(BINOWN) &>/dev/null || useradd -r $(BINOWN)
+	install -o root -m 755 publish.sh $(DESTDIR)$(BINDIR)/publish
 	install -o $(BINOWN) -m 700 -s daemon $(DESTDIR)sbin/publish-daemon
 ifeq ($(shell uname -s),Linux)
 	install -o $(BINOWN) -m 644 publish.service /usr/lib/systemd/system/publish.service
 endif
 
 clean:
-	rm -f a.out *.core publish-daemon publish-daemon.o
+	rm -f a.out *.core daemon daemon.o
 
